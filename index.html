@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinemantic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.20) 40%,
+        rgba(0,0,0,0.55) 100%
+      );
+      z-index: 1;
+    }
+
+    .content {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .logo {
+      width: clamp(220px, 38vw, 520px);
+      opacity: 0;
+      transform: translateY(-14px);
+      animation: fadeUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+    }
+
+    .text-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 32px;
+    }
+
+    .tagline {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: clamp(13px, 1.4vw, 18px);
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.90);
+      text-align: center;
+      max-width: clamp(280px, 48vw, 640px);
+      line-height: 1.6;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+    }
+
+    .contact-wrap {
+      opacity: 0;
+      animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+    }
+
+    .contact {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: clamp(11px, 1vw, 13px);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.60);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact:hover {
+      color: #fff;
+    }
+
+    .spacer { width: 100%; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <video class="bg-video" src="field_breezemp_.mp4" autoplay loop muted playsinline></video>
+
+  <div class="overlay"></div>
+
+  <main class="content">
+
+    <div class="logo-wrap">
+      <img class="logo" src="cinemantic_logo1-0-91-92-0.png" alt="Cinemantic" />
+    </div>
+
+    <div class="text-block">
+      <p class="tagline">
+        An AI-first Studio where the movie is not the product but the platform
+      </p>
+      <div class="contact-wrap">
+        <a class="contact" href="mailto:marceldirects@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+  </main>
+
+</body>
+</html>
