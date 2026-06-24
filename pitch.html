@@ -1459,13 +1459,10 @@
 <script>
   const slides = document.querySelectorAll('.slide');
   const total  = slides.length;
-  let current  = 1;
+  let current  = 0;
 
-  // Initialize to slide 2
-  slides[0].classList.remove('active');
-  slides[1].classList.add('active');
-  document.getElementById('slide-counter').textContent = `2 / ${total}`;
-  document.getElementById('btn-prev').disabled = false;
+  document.getElementById('slide-counter').textContent = `1 / ${total}`;
+  document.getElementById('btn-prev').disabled = true;
 
   function go(dir) {
     slides[current].classList.remove('active');
