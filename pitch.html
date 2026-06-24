@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinemantic — Investor Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700;1,900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:    #E05337;
+      --gray:   #625F60;
+      --black:  #111111;
+      --white:  #FFFFFF;
+      --bg:     #FAFAFA;
+    }
+    .slide h1 { color: var(--gray) !important; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #1a1a1a;
+      overflow: hidden;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    /* ── Stage: 16:9 letterboxed ─────────────────────── */
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #deck {
+      position: relative;
+      width: 100%;
+      /* 16:9 aspect ratio via padding trick */
+      aspect-ratio: 16 / 9;
+      max-height: 100vh;
+      max-width: calc(100vh * 16 / 9);
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    /* ── Slides ───────────────────────────────────────── */
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── Slide entrance animations ───────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .slide.active .slide-label {
+      animation: fadeUp 0.4s ease both;
+      animation-delay: 0.05s;
+    }
+    .slide.active h1 {
+      animation: fadeUp 0.5s ease both;
+      animation-delay: 0.12s;
+    }
+    .slide.active .subtitle,
+    .slide.active .intro,
+    .slide.active .opener,
+    .slide.active .s2-top {
+      animation: fadeUp 0.5s ease both;
+      animation-delay: 0.22s;
+    }
+    .slide.active .body-copy,
+    .slide.active .body-copy-red,
+    .slide.active .body-copy-small,
+    .slide.active .emphasis,
+    .slide.active .keywords,
+    .slide.active .team,
+    .slide.active .steps,
+    .slide.active .contacts {
+      animation: fadeUp 0.5s ease both;
+      animation-delay: 0.32s;
+    }
+    .slide.active .closing,
+    .slide.active .tagline,
+    .slide.active .tags,
+    .slide.active .callout,
+    .slide.active .video-grid,
+    .slide.active .s5-image,
+    .slide.active .s6-media {
+      animation: fadeUp 0.5s ease both;
+      animation-delay: 0.42s;
+    }
+
+    /* ── Slide background image helper ───────────────── */
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    /* ── Slide label (top-left) ───────────────────────── */
+    .slide-label {
+      position: absolute;
+      top: 4.5%;
+      left: 5.5%;
+      font-size: clamp(10px, 1.1vw, 15px);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* ── Navigation — top-right corner of deck ──────── */
+    #nav {
+      position: absolute;
+      top: 3%;
+      right: 3%;
+      display: flex;
+      align-items: center;
+      gap: 0.8%;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .nav-btn {
+      background: none;
+      border: 1px solid rgba(0,0,0,0.2);
+      color: var(--gray);
+      font-family: 'Barlow', sans-serif;
+      font-size: clamp(9px, 0.9vw, 13px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.4em 1.1em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: rgba(0,0,0,0.06); color: var(--black); }
+    .nav-btn:disabled { opacity: 0.2; cursor: default; }
+
+    #slide-counter {
+      color: var(--gray);
+      font-size: clamp(9px, 0.85vw, 12px);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      min-width: 3.5em;
+      text-align: center;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 1 — Title
+    ════════════════════════════════════════════════════ */
+    #slide-1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+    }
+    #slide-1 .logo-img {
+      width: clamp(270px, 42vw, 630px);
+      height: auto;
+      margin-bottom: 2%;
+    }
+    #slide-1 .tagline {
+      font-size: clamp(13px, 1.5vw, 20px);
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: 0.01em;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 2 — The Shift
+    ════════════════════════════════════════════════════ */
+    #slide-2 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #slide-2 .s2-top {}
+
+    #slide-2 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+      max-width: 68%;
+    }
+
+    #slide-2 .subheads {
+      margin-top: 4%;
+    }
+    #slide-2 .subheads p {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 0.15em;
+    }
+    #slide-2 .subheads .line-black { color: var(--black); }
+    #slide-2 .subheads .line-red   { color: var(--red); font-style: italic; }
+
+    #slide-2 .body-copy {
+      margin-top: 3%;
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.55;
+      max-width: 72%;
+    }
+
+    /* Two-column wave section */
+    #slide-2 .waves {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      width: 100%;
+      height: 48%;
+    }
+
+    #slide-2 .wave-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: auto;
+      opacity: 0.40;
+      pointer-events: none;
+    }
+
+    .wave-item {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      z-index: 1;
+    }
+    .wave-item:nth-child(2) { transform: translateX(25%); }
+    .wave-item:nth-child(3) { transform: translateX(-25%); }
+
+    .wave-label {
+      font-size: clamp(12px, 1.4vw, 20px);
+      font-weight: 700;
+      color: var(--black);
+      text-align: center;
+      margin-bottom: 4%;
+      letter-spacing: 0.02em;
+    }
+
+    .wave-items-list {
+      list-style: none;
+      text-align: center;
+    }
+    .wave-items-list li {
+      font-size: clamp(10px, 1.15vw, 16px);
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 3 — The Opportunity
+    ════════════════════════════════════════════════════ */
+    #slide-3 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #slide-3 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+      max-width: 70%;
+    }
+    #slide-3 .body-copy {
+      margin-top: 4%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--black);
+      line-height: 1.4;
+      max-width: 78%;
+    }
+    #slide-3 .keywords {
+      font-size: clamp(13px, 1.5vw, 20px);
+      color: var(--gray);
+      margin-top: 1.5%;
+      font-style: italic;
+    }
+    #slide-3 .closing {
+      margin-top: auto;
+      padding-top: 3%;
+    }
+    #slide-3 .closing p:first-child {
+      font-size: clamp(13px, 1.6vw, 22px);
+      color: var(--black);
+    }
+    #slide-3 .closing .red {
+      font-size: clamp(15px, 1.9vw, 26px);
+      color: var(--red);
+      font-weight: 700;
+      font-style: italic;
+      margin-top: 0.3em;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 4 — The Model
+    ════════════════════════════════════════════════════ */
+    #slide-4 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-4 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+    }
+    #slide-4 .flow {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 700;
+      color: var(--red);
+      margin-top: 3%;
+      letter-spacing: 0.01em;
+    }
+    #slide-4 .steps {
+      list-style: none;
+      margin-top: 3%;
+    }
+    #slide-4 .steps li {
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.8;
+    }
+    #slide-4 .steps li::before {
+      content: counter(step) '. ';
+      counter-increment: step;
+      color: var(--red);
+      font-weight: 700;
+    }
+    #slide-4 .steps { counter-reset: step; }
+    #slide-4 .tagline {
+      margin-top: auto;
+      padding-top: 3%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 900;
+      color: var(--black);
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 5 — The Business
+    ════════════════════════════════════════════════════ */
+    #slide-5 {
+      background: var(--white);
+      padding: 3% 5.5% 2%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-5 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 3%;
+      max-width: 95%;
+      white-space: nowrap;
+    }
+    #slide-5 .body-copy {
+      margin-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--black);
+      line-height: 1.4;
+      max-width: 82%;
+    }
+    #slide-5 .body-copy-red {
+      margin-top: 0;
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--red);
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 82%;
+    }
+    #slide-5 .body-copy-small {
+      margin-top: 1.5%;
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.5;
+      max-width: 82%;
+    }
+    #slide-5 .s5-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 0;
+      padding-bottom: 2%;
+    }
+    #slide-5 .s5-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 6 — Mod the Movie
+    ════════════════════════════════════════════════════ */
+    #slide-6 {
+      background: var(--white);
+      padding: 3% 5.5% 2%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-6 .intro {
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--red);
+      font-weight: 500;
+      margin-top: 3%;
+      letter-spacing: 0.02em;
+    }
+    #slide-6 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 1%;
+    }
+    #slide-6 .body-copy {
+      font-size: clamp(10px, 1.1vw, 15px);
+      color: var(--black);
+      line-height: 1.45;
+      max-width: 80%;
+      margin-top: 1%;
+    }
+    #slide-6 .emphasis {
+      margin-top: 1.5%;
+      font-size: clamp(10px, 1.2vw, 16px);
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--black);
+    }
+    /* Slide 6 media grid */
+    #slide-6 .s6-media {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1%;
+      margin-top: 2%;
+      min-height: 0;
+    }
+    #slide-6 .s6-top-row {
+      display: flex;
+      gap: 1%;
+      flex: 1;
+      min-height: 0;
+    }
+    #slide-6 .s6-top-row img {
+      flex: 1;
+      width: 0;
+      object-fit: cover;
+      border-radius: 3px;
+    }
+    #slide-6 .s6-bottom-row {
+      display: flex;
+      gap: 1%;
+      flex: 1.2;
+      min-height: 0;
+      align-items: stretch;
+    }
+    #slide-6 .s6-card {
+      flex: 1.4;
+      min-width: 0;
+      overflow: visible;
+    }
+    #slide-6 .s6-card img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      border-radius: 3px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: zoom-in;
+      position: relative;
+      z-index: 1;
+    }
+    #slide-6 .s6-card img:hover {
+      transform: scale(1.6);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+      z-index: 10;
+    }
+    #slide-6 .s6-funnel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      text-align: center;
+    }
+    #slide-6 .s6-funnel p {
+      font-size: clamp(7px, 0.75vw, 10px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.4;
+    }
+    #slide-6 .s6-funnel .arrow {
+      color: var(--gray);
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+    #slide-6 .s6-tagline {
+      margin-top: 4%;
+      font-size: clamp(8px, 0.9vw, 13px) !important;
+      font-weight: 700 !important;
+      font-style: italic;
+      color: var(--red) !important;
+      text-transform: none !important;
+      letter-spacing: 0 !important;
+      line-height: 1.4 !important;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 7 — Cinetelligence
+    ════════════════════════════════════════════════════ */
+    #slide-7 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-7 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+      max-width: 90%;
+    }
+    #slide-7 .subtitle {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--red);
+      margin-top: 1.5%;
+      max-width: 90%;
+      line-height: 1.4;
+    }
+    #slide-7 .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3% 5%;
+      margin-top: 4%;
+    }
+    .grid-item h4 {
+      font-size: clamp(11px, 1.3vw, 18px);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5em;
+    }
+    .grid-item h4::before { content: '* '; color: var(--red); }
+    .grid-item p {
+      font-size: clamp(10px, 1.1vw, 15px);
+      color: var(--gray);
+      line-height: 1.55;
+    }
+    #slide-7 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+    }
+    #slide-7 .closing span { color: var(--black); }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 8 — Distribution
+    ════════════════════════════════════════════════════ */
+    #slide-8 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-8 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+      max-width: 95%;
+      white-space: nowrap;
+    }
+    #slide-8 .hiway-logo {
+      position: absolute;
+      bottom: 6%;
+      right: 5.5%;
+      width: clamp(120px, 14vw, 200px);
+      height: auto;
+    }
+    #slide-8 .intro {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--red);
+      margin-top: 1%;
+      line-height: 1.4;
+    }
+    #slide-8 .body-copy {
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 78%;
+      margin-top: 3%;
+    }
+    #slide-8 .hiway-note {
+      margin-top: 3%;
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 78%;
+    }
+    #slide-8 .power-label {
+      margin-top: 4%;
+      font-size: clamp(11px, 1.3vw, 18px);
+      font-weight: 700;
+      color: var(--black);
+    }
+    #slide-8 .power-statement {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 700;
+      color: var(--black);
+      margin-top: 0.5%;
+    }
+    #slide-8 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 9 — The Edge
+    ════════════════════════════════════════════════════ */
+    #slide-9 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-9 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+    }
+    #slide-9 .h1-line2 { color: var(--red); }
+    #slide-9 .body-copy {
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 92%;
+      margin-top: 3%;
+    }
+    #slide-9 .attributes {
+      list-style: none;
+      margin-top: 3%;
+    }
+    #slide-9 .attributes li {
+      font-size: clamp(11px, 1.3vw, 18px);
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.8;
+    }
+    #slide-9 .attributes li::before { content: '* '; color: var(--red); }
+    #slide-9 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+    }
+    #slide-9 .closing p:first-child {
+      color: var(--black);
+    }
+    #slide-9 .closing .red {
+      color: var(--black);
+      font-weight: 400;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 10 — Why Us
+    ════════════════════════════════════════════════════ */
+    #slide-10 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-10 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+      max-width: 65%;
+    }
+    #slide-10 .s10-subhead {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--black);
+      margin-top: 1.5%;
+      line-height: 1.4;
+    }
+    #slide-10 .team {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3% 8%;
+      margin-top: 3%;
+    }
+    .team-member h3 {
+      font-size: clamp(13px, 1.5vw, 20px);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5em;
+    }
+    .team-member p {
+      font-size: clamp(10px, 1.15vw, 16px);
+      color: var(--gray);
+      line-height: 1.5;
+      margin-bottom: 0.8em;
+    }
+    .team-member p.bio {
+      font-size: clamp(12px, 1.4vw, 19px);
+      color: var(--black);
+    }
+    .team-member .credits-label {
+      font-size: clamp(9px, 1.05vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.3em;
+    }
+    .team-member .credits {
+      font-size: clamp(10px, 1.1vw, 15px);
+      color: var(--gray);
+      line-height: 1.5;
+      font-style: italic;
+    }
+    #slide-10 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--red);
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 11 — Investment
+    ════════════════════════════════════════════════════ */
+    #slide-11 {
+      background: var(--white);
+      padding: 2% 5.5% 4.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-11 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+      max-width: 92%;
+    }
+    #slide-11 .subtitle {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--red);
+      margin-top: 1%;
+      max-width: 100%;
+      line-height: 1.4;
+    }
+    #slide-11 .steps {
+      list-style: none;
+      counter-reset: step;
+      margin-top: 3%;
+      display: flex;
+      flex-direction: row;
+      gap: 2%;
+      flex: 1;
+    }
+    #slide-11 .steps li {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f5f5f5;
+      border-top: 3px solid var(--red);
+      padding: 0.8em 1em;
+      gap: 0.5em;
+    }
+    #slide-11 .steps li::before {
+      content: counter(step);
+      counter-increment: step;
+      color: var(--red);
+      font-weight: 900;
+      font-size: clamp(18px, 2.8vw, 38px);
+      line-height: 1;
+    }
+    #slide-11 .step-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+    }
+    #slide-11 .step-title {
+      font-weight: 700;
+      font-size: clamp(9px, 1.1vw, 15px);
+      display: block;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    #slide-11 .step-body {
+      font-weight: 400;
+      font-size: clamp(8px, 0.95vw, 13px);
+      display: block;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+    #slide-11 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+    }
+    #slide-11 .closing span { color: var(--red); }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 12 — Sample Project
+    ════════════════════════════════════════════════════ */
+    #slide-12 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-12 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+    }
+    #slide-12 .body-copy {
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 62%;
+      margin-top: 3%;
+    }
+    #slide-12 .tags {
+      margin-top: 2%;
+      font-size: clamp(10px, 1.15vw, 16px);
+      color: var(--red);
+      font-style: italic;
+      max-width: 62%;
+    }
+    #slide-12 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+      max-width: 62%;
+    }
+    #slide-12 .closing span { color: var(--red); }
+    #slide-12 .slide-img {
+      position: absolute;
+      right: 3%;
+      top: 12%;
+      width: 36%;
+      height: 76%;
+      object-fit: contain;
+      cursor: zoom-in;
+      transform: rotate(3deg);
+      transition: opacity 0.2s;
+    }
+    #slide-12 .slide-img:hover { opacity: 0.88; }
+    #slide-12 .callout {
+      font-size: clamp(9px, 1vw, 13px);
+      color: var(--gray);
+      line-height: 1.6;
+      background: #f0f0f0;
+      padding: 0.7em 1em;
+      margin-top: 2%;
+      max-width: 62%;
+      border-left: 3px solid #ccc;
+    }
+
+    /* Lightbox */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 8px 60px rgba(0,0,0,0.6);
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 13 — AI Can Do
+    ════════════════════════════════════════════════════ */
+    #slide-13 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-13 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+    }
+    #slide-13 .body-copy {
+      font-size: clamp(11px, 1.5vw, 22px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 100%;
+      margin-top: 3%;
+    }
+    #slide-13 .video-grid {
+      margin-top: 4%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 2%;
+      flex: 1;
+    }
+    #slide-13 .video-cell {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      font-size: clamp(9px, 1vw, 13px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+    #slide-13 .video-cell iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE 14 — The Ask
+    ════════════════════════════════════════════════════ */
+    #slide-14 {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-14 h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+      max-width: 90%;
+    }
+    #slide-14 .opener {
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--black);
+      line-height: 1.6;
+      max-width: 75%;
+      margin-top: 3%;
+    }
+    #slide-14 .contacts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3% 8%;
+      margin-top: 5%;
+    }
+    .contact-block h3 {
+      font-size: clamp(13px, 1.5vw, 20px);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5em;
+    }
+    .contact-block p {
+      font-size: clamp(11px, 1.3vw, 18px);
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    .contact-block a {
+      color: var(--red);
+      text-decoration: none;
+    }
+    .contact-block a:hover { text-decoration: underline; }
+    #slide-14 .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      display: flex;
+      gap: 4%;
+    }
+    .closing-line {
+      font-size: clamp(16px, 2.4vw, 34px);
+      font-weight: 700;
+      color: var(--black);
+    }
+    .closing-line span { color: var(--red); }
+
+    /* ════════════════════════════════════════════════════
+       SLIDE REMIX — ReMixMode Demo
+    ════════════════════════════════════════════════════ */
+    #slide-remix {
+      background: var(--white);
+      padding: 4.5% 5.5% 3%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-remix h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 4%;
+    }
+    #slide-remix .remix-subhead {
+      font-size: clamp(14px, 2vw, 28px);
+      color: var(--red);
+      margin-top: 1.5%;
+      max-width: 100%;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    #slide-remix .remix-video {
+      flex: 1;
+      margin-top: 2%;
+      min-height: 0;
+      position: relative;
+    }
+    #slide-remix .remix-video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="deck">
+
+    <!-- ══ SLIDE 1 ══════════════════════════════════════ -->
+    <section class="slide active" id="slide-1">
+      <div class="slide-bg" style="background-image: url('background images/page1.png'); opacity: 0.15;"></div>
+      <img class="logo-img" src="cinemantic_logo1-0-91-92-0.png" alt="cinemantic" />
+      <p class="tagline">A new entertainment platform where movies become remixable, collectible, monetizable worlds.</p>
+    </section>
+
+    <!-- ══ SLIDE 2 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-2">
+      <div class="slide-bg" style="background-image: url('background images/Screenshot 2026-05-12 at 10.00.34 AM.png');"></div>
+      <span class="slide-label">01 &nbsp; The Shift</span>
+
+      <div class="s2-top">
+        <h1>Production Is the Next Media Disruption.</h1>
+
+        <div class="subheads">
+          <p class="line-black">The internet changed how media moved.</p>
+          <p class="line-red">AI changes what a movie can be.</p>
+        </div>
+
+        <p class="body-copy">
+          Movies, shows, trailers, and branded entertainment can now be developed, tested, modified, personalized,
+          and monetized faster than ever before.
+        </p>
+      </div>
+
+      <div class="waves">
+        <img class="wave-bg" src="images used/wave-graphic copy.png" alt="" />
+        <div class="wave-item">
+          <p class="wave-label">Internet Wave</p>
+          <ul class="wave-items-list">
+            <li>Distribution</li>
+            <li>Discovery</li>
+            <li>Pricing</li>
+            <li>Consumption</li>
+          </ul>
+        </div>
+        <div class="wave-item">
+          <p class="wave-label">AI Wave</p>
+          <ul class="wave-items-list">
+            <li>Production</li>
+            <li>Development</li>
+            <li>Cost structure</li>
+            <li>Customization</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SLIDE 3 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-3">
+      <div class="slide-bg" style="background-image: url('background images/page3.png'); opacity: 0.18;"></div>
+      <span class="slide-label">02 &nbsp; The Opportunity</span>
+      <h1>Cheap Content is the Commodity. Playable IP is the Prize.</h1>
+      <p class="body-copy">When anyone can make content faster and cheaper, the advantage moves to the system around the content:</p>
+      <p class="keywords">taste • IP ownership • audience data • repeat engagement • paid customization • platform infrastructure</p>
+      <div class="closing">
+        <p>The winning studio won't just make movies cheaper.</p>
+        <p class="red">It will make movies earn differently.</p>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 4 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-4">
+      <div class="slide-bg" style="background-image: url('background images/page4.png'); opacity: 0.10;"></div>
+      <span class="slide-label">03 &nbsp; The Model</span>
+      <h1>The New Cinemantic Model</h1>
+      <p class="flow">Create → Release → Remix → Monetize → Learn → Repeat.</p>
+      <ol class="steps">
+        <li>Create the base movie</li>
+        <li>Release it as the entry point</li>
+        <li>Let audiences modify scenes, characters, endings, weapons, cuts</li>
+        <li>Capture micro-transactions and preference data</li>
+        <li>Use that data to expand the IP</li>
+        <li>Repeat across franchises</li>
+      </ol>
+      <p class="tagline">Not one movie. A playable business engine.</p>
+    </section>
+
+    <!-- ══ SLIDE 5 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-5">
+      <div class="slide-bg" style="background-image: url('background images/page5.png'); opacity: 0.15;"></div>
+      <span class="slide-label">04 &nbsp; The Business</span>
+      <h1>The Movie Is the Front Door.</h1>
+      <p class="body-copy">In the old model, the movie was the finished good.</p>
+      <p class="body-copy-red">In the new model, it's only the beginning of the business.</p>
+      <p class="body-copy-small">Audiences watch the story, then enter the world: customize scenes, unlock alternates, collect variants,
+        replay moments, and pay to remix the experience. AI makes that possible.</p>
+      <div class="s5-image">
+        <img src="images used/around it.png" alt="Around It" />
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 6 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-6">
+      <div class="slide-bg" style="background-image: url('background images/page6.png'); opacity: 0.15;"></div>
+      <span class="slide-label">05 &nbsp; Customize, Collect, Remix</span>
+      <p class="intro">A paid customization layer for AI-native entertainment.</p>
+      <h1>Mod the Movie.</h1>
+      <p class="body-copy">
+        A viewer can watch the movie for free, then pay small fees to unlock new versions of scenes: different killer weapons, alternate
+        characters, new endings, regional cuts, collectible moments, and replayable variants.
+      </p>
+      <div class="emphasis">
+        AI makes the versioning cheap enough.<br>
+        The interface makes it monetizable.<br>
+        The IP makes it repeatable.
+      </div>
+
+      <!-- Image grid -->
+      <div class="s6-media">
+        <!-- Top row: 4 scene images -->
+        <div class="s6-top-row">
+          <img src="images used/whitecheerleader.png" alt="White Cheerleader" />
+          <img src="images used/blackcheerleader.png" alt="Black Cheerleader" />
+          <img src="images used/clip knife.png" alt="Holds Knife" />
+          <img src="images used/clip ax.png" alt="Holds Axe" />
+        </div>
+        <!-- Bottom row: UI card | funnel text | UI card -->
+        <div class="s6-bottom-row">
+          <div class="s6-card">
+            <img src="images used/cooseyourcharacter.png" alt="Choose Your Character" />
+          </div>
+          <div class="s6-funnel">
+            <p>FREE MOVIE</p>
+            <p class="arrow">↓</p>
+            <p>MOD LAYER</p>
+            <p class="arrow">↓</p>
+            <p>PAID SCENE VARIANTS</p>
+            <p class="arrow">↓</p>
+            <p>REPEAT VIEWING</p>
+            <p class="arrow">↓</p>
+            <p>MORE REVENUE PER IP</p>
+            <p class="s6-tagline">The movie is the attraction.<br>The mod layer is the business.</p>
+          </div>
+          <div class="s6-card">
+            <img src="images used/chooseyourweapon.png" alt="Choose Killer Weapon" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE REMIX ══════════════════════════════════ -->
+    <section class="slide" id="slide-remix">
+      <span class="slide-label">05b &nbsp; ReMixMode</span>
+      <h1>ReMixMode Demo</h1>
+      <p class="remix-subhead">Pause the movie, choose a new element, unlock the variation, and replay the scene.</p>
+      <div class="remix-video">
+        <iframe src="https://player.vimeo.com/video/1203228080?h=0368124193&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="ReMixMode" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 7 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-7">
+      <div class="slide-bg" style="background-image: url('background images/page6.png'); opacity: 0.15;"></div>
+      <span class="slide-label">06 &nbsp; The Product Layer</span>
+      <h1>Cinetelligence Is the Operating System Behind Movie Mods.</h1>
+      <p class="subtitle">The software layer that turns a finished movie into a remixable product.</p>
+      <div class="grid">
+        <div class="grid-item">
+          <h4>Viewer Interface</h4>
+          <p>The front-end experience where audiences choose scene changes, unlock alternates, and restart or replay modified moments.</p>
+        </div>
+        <div class="grid-item">
+          <h4>Rights + Rules Layer</h4>
+          <p>Controls what can be changed, what stays canon, what costs money, and<br>what versions are available.</p>
+        </div>
+        <div class="grid-item">
+          <h4>Scene Variant Engine</h4>
+          <p>A system for generating, organizing, pricing, and delivering alternate weapons, characters, endings, locations, and cuts.</p>
+        </div>
+        <div class="grid-item">
+          <h4>Data Feedback Loop</h4>
+          <p>Tracks what audiences unlock, replay, collect, abandon, or share.</p>
+        </div>
+        <div class="grid-item">
+          <h4>IP Expansion System</h4>
+          <p>Turns audience behavior into new trailers, spin-offs, sequels, character packs, and franchise decisions.</p>
+        </div>
+      </div>
+      <p class="closing">Cinetelligence is not just production software.<br><span>It is the commerce layer for remixable movies.</span></p>
+    </section>
+
+    <!-- ══ SLIDE 8 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-8">
+      <div class="slide-bg" style="background-image: url('background images/page6.png'); opacity: 0.15;"></div>
+      <span class="slide-label">07 &nbsp; Direct Distribution, Built In</span>
+      <img class="hiway-logo" src="images used/hiway-logo.png" alt="Hiway" />
+      <h1>Every Film Can Build Its Own Market.</h1>
+      <p class="intro">AI-first production needs AI-era distribution.</p>
+      <p class="body-copy">
+        Emerging platform partners like <strong><em>Hiway</em></strong> give Cinemantic a self-distribution layer where we keep control
+        of the film, audience relationship, pricing, data, and revenue.
+      </p>
+      <p class="hiway-note">
+        We can sell directly, embed anywhere, geo-block by territory, and give filmmakers, cast, influencers,
+        festivals, press, partners, and fan communities their own revenue-sharing links.
+      </p>
+      <p class="power-label">The new power:</p>
+      <p class="power-statement">A distributed sales network we control.</p>
+      <p class="closing">The movie is no longer just delivered to the market.<br>The movie helps create the market.</p>
+    </section>
+
+    <!-- ══ SLIDE 9 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-9">
+      <div class="slide-bg" style="background-image: url('background images/page9.png'); opacity: 0.15;"></div>
+      <span class="slide-label">08 &nbsp; The Edge</span>
+      <h1>AI Makes More Possible.<br><span class="h1-line2">Taste Makes It Matter.</span></h1>
+      <p class="body-copy">Because unlimited variants can become chaos. Cinemantic's value is knowing which choices are fun, cinematic, sellable, and franchise-building:</p>
+      <ul class="attributes">
+        <li>authorship</li>
+        <li>judgment</li>
+        <li>point of view</li>
+        <li>real people behind the work</li>
+      </ul>
+      <div class="closing">
+        <p>The tools are artificial.</p>
+        <p class="red">The taste is not.</p>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 10 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-10">
+      <div class="slide-bg" style="background-image: url('background images/page11.png'); background-size: auto 100%; background-position: 50% center; opacity: 0.08;"></div>
+      <span class="slide-label">09 &nbsp; Why Us</span>
+      <h1>Most AI-Film Teams Have Never Made a Film. We Have Made 50+.</h1>
+      <p class="s10-subhead">We know how films become business. We know how new platforms become real.</p>
+      <div class="team">
+        <div class="team-member">
+          <h3>Warren Ostergard</h3>
+          <p class="bio">Twenty-year veteran producer. 45+ feature films. DGA member since 2006.</p>
+          <p class="credits-label">Select Credits</p>
+          <p class="credits">Sound of Freedom • The Hill • Agent Game • The Bag Man • Faceless • 9/11 • Founder, Vitamin A Films • Two TIFF premieres</p>
+        </div>
+        <div class="team-member">
+          <h3>Marcel Sarmiento</h3>
+          <p class="bio">Award-winning director of 8 feature films. EP of 3 VR games for PlayStation and Meta. DGA member since 2019.</p>
+          <p class="credits-label">Select Credits</p>
+          <p class="credits">Deadgirl • The ABCs of Death • V/H/S Viral • Faceless • The Exorcist Legion VR • The Twilight Zone VR</p>
+        </div>
+      </div>
+      <p class="closing">We know how movies make money.</p>
+    </section>
+
+    <!-- ══ SLIDE 11 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-11">
+      <div class="slide-bg" style="background-image: url('background images/page9.png'); opacity: 0.08;"></div>
+      <span class="slide-label">10 &nbsp; What the Initial Investment Unlocks</span>
+      <h1>Building the Proof for a New Entertainment Model</h1>
+      <p class="subtitle">Lower risk per project. Faster learning cycles. Earlier proof of concept.<br>A platform that gets smarter with every release.</p>
+      <ol class="steps">
+        <li><div class="step-content"><span class="step-title">Base movie(s) / proof-of-concept(s)</span><span class="step-body">Identify promising stories, worlds, characters, and rights opportunities that can support both a film and a repeatable customization layer.</span></div></li>
+        <li><div class="step-content"><span class="step-title">Produce AI-first trailers</span><span class="step-body">Create multiple proof-of-concept trailers quickly to test tone, genre, character appeal, marketability, and buyer interest before committing to a full feature.</span></div></li>
+        <li><div class="step-content"><span class="step-title">Movie Mod interface prototype / Cinetelligence back-end</span><span class="step-body">Build the first version of the viewer-facing customization interface and the underlying system that manages scene variants, pricing, rules, assets, and delivery.</span></div></li>
+        <li><div class="step-content"><span class="step-title">Paid scene-variant demo / Audience testing</span><span class="step-body">Demonstrate how viewers can unlock alternate versions of key scenes, then use audience behavior, buyer feedback, and creative signals to refine the model.</span></div></li>
+        <li><div class="step-content"><span class="step-title">First franchise expansion plan</span><span class="step-body">Use the strongest audience and market signals to determine which characters, worlds, sequels, spin-offs, and paid customization packs should come next.</span></div></li>
+      </ol>
+      <p class="closing">We are not just proving we can make an AI movie.<br><span>We are proving the movie can become software.</span></p>
+    </section>
+
+    <!-- ══ SLIDE 12 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-12">
+      <div class="slide-bg" style="background-image: url('background images/page13.png'); opacity: 0.10;"></div>
+      <span class="slide-label">11 &nbsp; Sample Project</span>
+      <h1>Horror</h1>
+      <p class="body-copy">
+        Horror remains one of the most durable and profitable genres because it sells a primal experience, not just a plot.
+        It can travel across cultures, generate strong theatrical urgency, and be resold to each new generation through fresh monsters, new fears, and reinventions of familiar formulas.
+        <br><br>
+        Horror audiences love <strong>variants, kills, characters, endings, masks, weapons, lore, collectibles, and re-watching.</strong>
+        <span style="color:var(--red)">That makes horror ideal for weapon swaps, alternate victims, new endings, localized cuts, collector scenes, character packs, and seasonal drops.</span>
+      </p>
+      <div class="callout">
+        <em>"Cheerleaders In Trouble"</em> was the subject of a 2020 bidding war between MGM and Warner Bros., ultimately selling to WB.
+        Now Cinemantic has an option to produce it, making the franchise an ideal first proof for AI-native production, paid customization, and repeatable IP expansion.
+      </div>
+
+      <p class="closing">Horror does not just tolerate remixing. <span>It invites it.</span></p>
+      <img class="slide-img" src="images used/Cheer your leaders in trouble content.jpg" alt="Cheerleaders In Trouble" onclick="openLightbox(this)">
+    </section>
+
+    <!-- ══ SLIDE 13 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-13">
+      <div class="slide-bg"></div>
+      <span class="slide-label">12 &nbsp; The Shift</span>
+      <h1>What AI Can Already Do.</h1>
+      <p class="body-copy">
+        These projects showcase the possibilities of AI-generated filmmaking using advanced AI visual tools, combining cinematic
+        lighting, realistic environments, immersive atmosphere, and consistent character design.
+      </p>
+      <div class="video-grid">
+        <div class="video-cell">[ Video 1 ]</div>
+        <div class="video-cell">[ Video 2 ]</div>
+        <div class="video-cell">[ Video 3 ]</div>
+        <div class="video-cell">[ Video 4 ]</div>
+        <div class="video-cell">[ Video 5 ]</div>
+        <div class="video-cell">[ Video 6 ]</div>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 14 ══════════════════════════════════════ -->
+    <section class="slide" id="slide-14">
+      <div class="slide-bg" style="background-image: url('background images/page15.png'); opacity: 0.10;"></div>
+      <span class="slide-label">13 &nbsp; The Ask / Partnership</span>
+      <h1>Join Us in Building the First Movie Mod Platform.</h1>
+      <p class="opener">
+        The opportunity is not simply to make an AI-generated film.
+        It is to build the software, interface, and production pipeline
+        that turns movies into remixable, collectible, monetizable experiences.
+      </p>
+      <div class="contacts">
+        <div class="contact-block">
+          <h3>Warren Ostergard</h3>
+          <p>(323) 219-3047<br><a href="mailto:vitaminafilms@mac.com">vitaminafilms@mac.com</a></p>
+        </div>
+        <div class="contact-block">
+          <h3>Marcel Sarmiento</h3>
+          <p>(323) 369-5900<br><a href="mailto:hellomarcel@mac.com">hellomarcel@mac.com</a></p>
+        </div>
+      </div>
+      <div class="closing">
+        <div>
+          <p class="closing-line">Cinemantic makes the movie.</p>
+          <p class="closing-line"><span>Cinetelligence turns it into a business.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Navigation ════════════════════════════════ -->
+    <nav id="nav">
+      <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled>← Back</button>
+      <span id="slide-counter">1 / 14</span>
+      <button class="nav-btn" id="btn-next" onclick="go(1)">Next →</button>
+    </nav>
+
+  </div><!-- /deck -->
+</div><!-- /stage -->
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let current  = 1;
+
+  // Initialize to slide 2
+  slides[0].classList.remove('active');
+  slides[1].classList.add('active');
+  document.getElementById('slide-counter').textContent = `2 / ${total}`;
+  document.getElementById('btn-prev').disabled = false;
+
+  function go(dir) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    slides[current].classList.add('active');
+    document.getElementById('slide-counter').textContent = `${current + 1} / ${total}`;
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === total - 1;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    go(-1);
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  function openLightbox(img) {
+    const overlay = document.getElementById('lightbox-overlay');
+    document.getElementById('lightbox-img').src = img.src;
+    overlay.classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox-overlay').classList.remove('open');
+  }
+</script>
+
+<div class="lightbox-overlay" id="lightbox-overlay" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+</body>
+</html>
