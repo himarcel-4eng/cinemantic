@@ -1134,6 +1134,56 @@
       width: 100%;
       height: 100%;
       border: none;
+      cursor: pointer;
+    }
+    #slide-remix .custom-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.55));
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    #slide-remix .remix-video:hover .custom-controls { opacity: 1; }
+    #slide-remix .play-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      color: #fff;
+      width: 20px;
+      height: 20px;
+    }
+    #slide-remix .progress-bar {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    #slide-remix .progress-fill {
+      height: 100%;
+      background: var(--red);
+      border-radius: 2px;
+      width: 0%;
+      pointer-events: none;
+    }
+    #slide-remix .fs-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      color: #fff;
+      width: 18px;
+      height: 18px;
     }
 
   </style>
@@ -1291,8 +1341,19 @@
       <span class="slide-label">05b &nbsp; ReMixMode</span>
       <h1>ReMixMode Demo</h1>
       <p class="remix-subhead">Pause the movie, choose a new element, unlock the variation, and replay the scene.</p>
-      <div class="remix-video">
-        <video src="ReMixMode.mp4" controls playsinline></video>
+      <div class="remix-video" id="remix-player">
+        <video id="remix-vid" src="ReMixMode.mp4" playsinline onclick="togglePlay()"></video>
+        <div class="custom-controls">
+          <button class="play-btn" id="play-btn" onclick="togglePlay()">
+            <svg id="play-icon" viewBox="0 0 20 20" fill="white"><polygon points="4,2 18,10 4,18"/></svg>
+          </button>
+          <div class="progress-bar" id="progress-bar" onclick="seekVideo(event)">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <button class="fs-btn" onclick="toggleFS()">
+            <svg viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="1.5"><path d="M1 6V1h5M12 1h5v5M17 12v5h-5M6 17H1v-5"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1530,6 +1591,35 @@
   }
   function closeLightbox() {
     document.getElementById('lightbox-overlay').classList.remove('open');
+  }
+
+  // Custom video player
+  const vid = document.getElementById('remix-vid');
+  const playIcon = document.getElementById('play-icon');
+  const progressFill = document.getElementById('progress-fill');
+
+  function togglePlay() {
+    if (!vid) return;
+    if (vid.paused) { vid.play(); playIcon.innerHTML = '<rect x="3" y="2" width="4" height="16" fill="white"/><rect x="11" y="2" width="4" height="16" fill="white"/>'; }
+    else { vid.pause(); playIcon.innerHTML = '<polygon points="4,2 18,10 4,18" fill="white"/>'; }
+  }
+  function seekVideo(e) {
+    const bar = document.getElementById('progress-bar');
+    const ratio = e.offsetX / bar.offsetWidth;
+    vid.currentTime = ratio * vid.duration;
+  }
+  function toggleFS() {
+    const player = document.getElementById('remix-player');
+    if (!document.fullscreenElement) player.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  if (vid) {
+    vid.addEventListener('timeupdate', () => {
+      if (vid.duration) progressFill.style.width = (vid.currentTime / vid.duration * 100) + '%';
+    });
+    vid.addEventListener('ended', () => {
+      playIcon.innerHTML = '<polygon points="4,2 18,10 4,18" fill="white"/>';
+    });
   }
 </script>
 
