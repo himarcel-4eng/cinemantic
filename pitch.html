@@ -993,6 +993,7 @@
     }
     #slide-13 .video-cell {
       background: #111;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1009,6 +1010,32 @@
       width: 100%;
       height: 100%;
       border: none;
+    }
+    #slide-13 .ig-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      text-decoration: none;
+      color: rgba(255,255,255,0.6);
+      font-size: clamp(9px, 1vw, 13px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      width: 100%;
+      height: 100%;
+      transition: color 0.2s, background 0.2s;
+    }
+    #slide-13 .ig-link:hover {
+      color: #fff;
+      background: #1a1a1a;
+    }
+    #slide-13 .ig-link svg {
+      width: clamp(20px, 2vw, 28px);
+      height: clamp(20px, 2vw, 28px);
+      opacity: 0.5;
+    }
+    #slide-13 .ig-link:hover svg { opacity: 1; }
     }
 
     /* ════════════════════════════════════════════════════
@@ -1097,14 +1124,14 @@
       line-height: 1.4;
     }
     #slide-remix .remix-video {
-      flex: 1;
       margin-top: 2%;
-      min-height: 0;
+      width: 100%;
+      aspect-ratio: 1728 / 992;
+      max-height: 72%;
       position: relative;
     }
     #slide-remix .remix-video video {
-      position: absolute;
-      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
       border: none;
@@ -1409,12 +1436,27 @@
         lighting, realistic environments, immersive atmosphere, and consistent character design.
       </p>
       <div class="video-grid">
-        <div class="video-cell">[ Video 1 ]</div>
-        <div class="video-cell">[ Video 2 ]</div>
-        <div class="video-cell">[ Video 3 ]</div>
-        <div class="video-cell">[ Video 4 ]</div>
-        <div class="video-cell">[ Video 5 ]</div>
-        <div class="video-cell">[ Video 6 ]</div>
+        <div class="video-cell">
+          <iframe src="https://www.youtube.com/embed/xAmkYAuQu8I" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        <div class="video-cell">
+          <a class="ig-link" href="https://www.instagram.com/reel/DX6FFP0IKkf/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+            Fool's Errands<br>Zack Murray
+          </a>
+        </div>
+        <div class="video-cell">
+          <iframe src="https://www.youtube.com/embed/CNbmoVdirxw" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        <div class="video-cell">
+          <iframe src="https://www.youtube.com/embed/v2iiEVgjDHo" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        <div class="video-cell">
+          <iframe src="https://www.youtube.com/embed/y7gIoHq-YDo" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        <div class="video-cell">
+          <iframe src="https://www.youtube.com/embed/YS8dn-VJBEU" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
       </div>
     </section>
 
