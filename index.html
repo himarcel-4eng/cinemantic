@@ -11,14 +11,12 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background: #000;
     }
-
     .bg-video {
       position: fixed;
       inset: 0;
@@ -27,7 +25,6 @@
       object-fit: cover;
       z-index: 0;
     }
-
     .overlay {
       position: fixed;
       inset: 0;
@@ -39,7 +36,6 @@
       );
       z-index: 1;
     }
-
     .content {
       position: fixed;
       inset: 0;
@@ -49,21 +45,18 @@
       align-items: center;
       justify-items: center;
     }
-
     .logo-wrap {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
     }
-
     .logo {
       width: clamp(220px, 38vw, 520px);
       opacity: 0;
       transform: translateY(-14px);
       animation: fadeUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
     }
-
     .text-block {
       display: flex;
       flex-direction: column;
@@ -71,7 +64,6 @@
       width: 100%;
       gap: 32px;
     }
-
     .tagline {
       font-family: 'Open Sans', sans-serif;
       font-weight: 700;
@@ -85,13 +77,15 @@
       opacity: 0;
       animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
     }
-
-    .contact-wrap {
+    .links-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
       opacity: 0;
       animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
     }
-
-    .contact {
+    .contact, .deck-link {
       font-family: 'Open Sans', sans-serif;
       font-weight: 700;
       font-size: clamp(11px, 1vw, 13px);
@@ -100,44 +94,173 @@
       color: #ef3e2d;
       text-decoration: none;
       transition: color 0.3s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
     }
-
-    .contact:hover {
+    .contact:hover, .deck-link:hover {
       color: #ff6055;
     }
-
     .spacer { width: 100%; }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── Password modal ───────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #0e0e0e;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      min-width: 320px;
+    }
+    .modal-title {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .modal input[type="password"] {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 8px 0;
+      width: 100%;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input[type="password"]:focus {
+      border-bottom-color: #ef3e2d;
+    }
+    .modal input[type="password"]::placeholder {
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.15em;
+    }
+    .modal-submit {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #ef3e2d;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .modal-submit:hover { color: #ff6055; }
+    .modal-error {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ef3e2d;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .modal-error.visible { opacity: 1; }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: rgba(255,255,255,0.6); }
+    .modal-wrap { position: relative; }
   </style>
 </head>
 <body>
-
   <video class="bg-video" src="cinemantic-background.mp4" autoplay loop muted playsinline></video>
-
   <div class="overlay"></div>
-
   <main class="content">
-
     <div class="logo-wrap">
       <img class="logo" src="cinemantic_logo1-0-91-92-0.png" alt="Cinemantic" />
     </div>
-
     <div class="text-block">
       <p class="tagline">
         An AI-first Studio where the movie is not the product but the platform
       </p>
-      <div class="contact-wrap">
+      <div class="links-wrap">
         <a class="contact" href="mailto:marceldirects@gmail.com">Contact</a>
+        <button class="deck-link" onclick="openModal()">Investor Deck</button>
       </div>
     </div>
-
     <div class="spacer"></div>
-
   </main>
 
+  <!-- Password modal -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-wrap">
+      <div class="modal">
+        <p class="modal-title">Enter Password</p>
+        <input type="password" id="pw-input" placeholder="············" onkeydown="handleKey(event)" />
+        <button class="modal-submit" onclick="checkPassword()">Enter</button>
+        <p class="modal-error" id="modal-error">Incorrect password</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕ Close</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('modal-overlay').classList.add('open');
+      setTimeout(() => document.getElementById('pw-input').focus(), 50);
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.getElementById('pw-input').value = '';
+      document.getElementById('modal-error').classList.remove('visible');
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modal-overlay')) closeModal();
+    }
+    function handleKey(e) {
+      if (e.key === 'Enter') checkPassword();
+      if (e.key === 'Escape') closeModal();
+    }
+    function checkPassword() {
+      const val = document.getElementById('pw-input').value.trim().toLowerCase();
+      if (val === 'modthemovie') {
+        window.location.href = 'pitch.html';
+      } else {
+        const err = document.getElementById('modal-error');
+        err.classList.add('visible');
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+        setTimeout(() => err.classList.remove('visible'), 2500);
+      }
+    }
+  </script>
 </body>
 </html>
