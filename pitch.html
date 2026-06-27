@@ -729,6 +729,56 @@
     }
 
     /* ════════════════════════════════════════════════════
+       SLIDE 9b — The Producer's Advantage
+    ════════════════════════════════════════════════════ */
+    #slide-9b {
+      background: var(--white);
+      padding: 4.5% 5.5%;
+      display: flex;
+      flex-direction: column;
+    }
+    #slide-9b h1 {
+      font-size: clamp(28px, 5.6vw, 78px);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      margin-top: 5%;
+    }
+    #slide-9b .subtitle {
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 500;
+      color: var(--red);
+      margin-top: 1.5%;
+      line-height: 1.4;
+    }
+    #slide-9b .advantages {
+      list-style: none;
+      margin-top: 3%;
+      columns: 2;
+      column-gap: 8%;
+    }
+    #slide-9b .advantages li {
+      font-size: clamp(11px, 1.3vw, 18px);
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.8;
+      break-inside: avoid;
+    }
+    #slide-9b .advantages li::before { content: '* '; color: var(--red); }
+    #slide-9b .closing {
+      margin-top: auto;
+      padding-top: 2%;
+      font-size: clamp(14px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--black);
+    }
+    #slide-9b .closing .red {
+      color: var(--red);
+      font-weight: 400;
+    }
+
+    /* ════════════════════════════════════════════════════
        SLIDE 10 — Why Us
     ════════════════════════════════════════════════════ */
     #slide-10 {
@@ -1424,6 +1474,28 @@
       <div class="closing">
         <p>The best game mods don't replace the game.</p>
         <p class="red">They make you want to play it again.</p>
+      </div>
+    </section>
+
+    <!-- ══ SLIDE 9b ═════════════════════════════════════ -->
+    <section class="slide" id="slide-9b">
+      <div class="slide-bg" style="background-image: url('background images/page9.png'); opacity: 0.15;"></div>
+      <span class="slide-label">08b &nbsp; The Producer's Advantage</span>
+      <h1>AI Gives Filmmakers Something They've Never Had.</h1>
+      <p class="subtitle">The freedom to get it right.</p>
+      <ul class="advantages">
+        <li>Validate which projects are worth making as you make them</li>
+        <li>Reshoot until it works — for a fraction of the cost and time</li>
+        <li>Test multiple cuts before locking picture</li>
+        <li>Make changes even after release to capture more markets</li>
+        <li>Localize without rebuilding from scratch</li>
+        <li>Reimagine owned IP at a scale never before economically possible</li>
+        <li>Deploy different distribution strategies with less financial pressure</li>
+        <li>Distribute multiple versions to appeal to different markets</li>
+      </ul>
+      <div class="closing">
+        <p>More versions. More markets.</p>
+        <p class="red">More revenue from the same IP.</p>
       </div>
     </section>
 
