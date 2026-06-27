@@ -264,10 +264,18 @@
       height: 100%;
       z-index: 1;
     }
-    /* three even columns */
-    .wave-item.wave-stays .wave-label { color: var(--gray); }
-    .wave-item.wave-stays .wave-items-list li { color: var(--gray); font-style: italic; }
-    .wave-divider { width: 1px; background: rgba(0,0,0,0.08); align-self: stretch; margin: 8% 0; }
+    .wave-item:nth-child(2) { transform: translateX(25%); }
+    .wave-item:nth-child(3) { transform: translateX(-25%); }
+
+    #slide-2 .wave-constant {
+      text-align: center;
+      font-size: clamp(10px, 1.1vw, 15px);
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.01em;
+      padding-top: 2%;
+    }
+    #slide-2 .wave-constant span { color: var(--black); font-style: italic; }
 
     .wave-label {
       font-size: clamp(12px, 1.4vw, 20px);
@@ -1241,17 +1249,8 @@
             <li>Customization</li>
           </ul>
         </div>
-        <div class="wave-divider"></div>
-        <div class="wave-item wave-stays">
-          <p class="wave-label">What Never Changes</p>
-          <ul class="wave-items-list">
-            <li>The writer's voice</li>
-            <li>The director's intent</li>
-            <li>The story's emotional truth</li>
-            <li>The journey only they can take you on</li>
-          </ul>
-        </div>
       </div>
+      <p class="wave-constant">What Never Changes: <span>The writer and director's intent — and the journey only they can take you on.</span></p>
 
     </section>
 
