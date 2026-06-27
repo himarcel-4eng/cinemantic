@@ -264,8 +264,10 @@
       height: 100%;
       z-index: 1;
     }
-    .wave-item:nth-child(2) { transform: translateX(25%); }
-    .wave-item:nth-child(3) { transform: translateX(-25%); }
+    /* three even columns */
+    .wave-item.wave-stays .wave-label { color: var(--gray); }
+    .wave-item.wave-stays .wave-items-list li { color: var(--gray); font-style: italic; }
+    .wave-divider { width: 1px; background: rgba(0,0,0,0.08); align-self: stretch; margin: 8% 0; }
 
     .wave-label {
       font-size: clamp(12px, 1.4vw, 20px);
@@ -1237,6 +1239,16 @@
             <li>Development</li>
             <li>Cost structure</li>
             <li>Customization</li>
+          </ul>
+        </div>
+        <div class="wave-divider"></div>
+        <div class="wave-item wave-stays">
+          <p class="wave-label">What Never Changes</p>
+          <ul class="wave-items-list">
+            <li>The writer's voice</li>
+            <li>The director's intent</li>
+            <li>The story's emotional truth</li>
+            <li>The journey only they can take you on</li>
           </ul>
         </div>
       </div>
